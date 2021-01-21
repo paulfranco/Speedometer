@@ -13,6 +13,9 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import co.paulfran.speedometer.databinding.ActivityMainBinding
+import com.google.android.gms.location.*
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.stopButton.isEnabled = false
+        binding.startButton.isEnabled = true
 
         fusedLocationProvideClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = object : LocationCallback() {
@@ -36,10 +41,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.startButton.setOnClickListener {
             startLocationUpdates()
+            it.isEnabled = false
+            binding.stopButton.isEnabled = true
         }
 
         binding.stopButton.setOnClickListener {
             stopLocationUpdates()
+            it.isEnabled = false
+            binding.startButton.isEnabled = true
         }
 
     }
@@ -51,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLocationUpdates() {
         binding.startButton.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
-        binding.stopButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+       // binding.stopButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 requestNewLocationData()
@@ -79,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun stopLocationUpdates() {
         binding.stopButton.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
-        binding.startButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+      //  binding.startButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         fusedLocationProvideClient.removeLocationUpdates(locationCallback)
     }
 
