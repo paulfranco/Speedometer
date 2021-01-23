@@ -6,4 +6,5 @@
     <string name="latitude">Latitude:</string>
     <string name="longLatitude">LongLatitude:</string>
     <string name="km_h">km/h</string>
+    <string name="mph">mph</string>
 </resources>
