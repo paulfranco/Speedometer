@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationProvideClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private var kph: Float? = null
+    private var topSpeed: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.speed.typeface = font
         binding.latitude.typeface = font
         binding.longLatitude.typeface = font
+        binding.topSpeed.typeface = font
 
         binding.stopButton.isEnabled = false
         binding.startButton.isEnabled = true
@@ -48,7 +50,9 @@ class MainActivity : AppCompatActivity() {
                 //binding.speed.text = (location.speed * 3600 / 1000).roundToInt().toString()
                 kph = location.speed * 3600 / 1000
                 val mph = kph!! * 0.62137119223733
+                getTopSpeed(mph.toInt())
                 binding.speed.text = mph.roundToInt().toString()
+                binding.topSpeed.text = getTopSpeed(mph.toInt()).toString()
             }
         }
 
@@ -129,6 +133,12 @@ class MainActivity : AppCompatActivity() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
         )
+    }
+
+    private fun getTopSpeed(currentSpeed: Int) {
+        if (currentSpeed > topSpeed) {
+            topSpeed = currentSpeed
+        }
     }
 
 }
